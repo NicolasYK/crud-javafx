@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="500.0" prefWidth="900.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/21" fx:controller="gui.CrudController">
+<AnchorPane prefHeight="500.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CrudController">
    <children>
       <VBox layoutX="21.0" layoutY="77.0" prefHeight="222.0" prefWidth="145.0" spacing="20.0">
          <children>
@@ -30,6 +29,11 @@
                   <Font size="18.0" />
                </font>
             </Label>
+            <Label text="Themes">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
             <Label alignment="CENTER" text="Demographics">
                <font>
                   <Font size="18.0" />
@@ -44,9 +48,10 @@
       </VBox>
       <VBox layoutX="166.0" layoutY="77.0" prefHeight="222.0" prefWidth="200.0" spacing="22.0">
          <children>
-            <TextField fx:id="TfID" promptText="ID" />
+            <TextField fx:id="TfID" editable="false" promptText="ID" />
             <TextField fx:id="TfTitle" promptText="Title" />
             <TextField fx:id="TfGenres" promptText="Genres" />
+            <TextField fx:id="TfThemes" promptText="Themes" />
             <TextField fx:id="TfDemographics" promptText="Demographics" />
             <TextField fx:id="TfStudio" promptText="Studio" />
          </children>
@@ -56,13 +61,14 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="TfSearch" layoutX="85.0" layoutY="34.0" prefHeight="25.0" prefWidth="300.0" promptText="Title" />
-      <Button fx:id="BtSearch" layoutX="390.0" layoutY="34.0" mnemonicParsing="false" onAction="#OnActionSearch" prefHeight="25.0" prefWidth="80.0" text="search" />
-      <TableView fx:id="TvAnime" layoutX="390.0" layoutY="77.0" prefHeight="400.0" prefWidth="500.0">
+      <TextField fx:id="TfSearch" layoutX="85.0" layoutY="34.0" prefHeight="25.0" prefWidth="335.0" promptText="Title" />
+      <Button fx:id="BtSearch" layoutX="435.0" layoutY="34.0" mnemonicParsing="false" onAction="#OnActionSearch" prefHeight="25.0" prefWidth="80.0" text="search" />
+      <TableView fx:id="TvAnime" layoutX="390.0" layoutY="77.0" prefHeight="400.0" prefWidth="550.0">
         <columns>
-          <TableColumn fx:id="ColId" prefWidth="100.0" text="ID" />
+          <TableColumn fx:id="ColId" prefWidth="50.0" text="ID" />
           <TableColumn fx:id="ColTitle" prefWidth="100.0" text="Title" />
             <TableColumn fx:id="ColGenres" prefWidth="100.0" text="Genres" />
+            <TableColumn fx:id="ColThemes" prefWidth="100.0" text="Themes" />
             <TableColumn fx:id="ColDemographics" prefWidth="100.0" text="Demographics" />
             <TableColumn fx:id="ColStudio" prefWidth="100.0" text="Studio" />
         </columns>
@@ -70,6 +76,6 @@
       <Button fx:id="BtInsert" layoutX="20.0" layoutY="377.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="INSERT" />
       <Button fx:id="BtUpdate" layoutX="144.0" layoutY="377.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="UPDATE" />
       <Button fx:id="BtDelete" layoutX="266.0" layoutY="377.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="DELETE" />
-      <ProgressBar fx:id="PbSearch" layoutX="480.0" layoutY="34.0" prefHeight="27.0" prefWidth="410.0" progress="0.0" />
+      <ProgressBar fx:id="PbSearch" layoutX="530.0" layoutY="33.0" prefHeight="27.0" prefWidth="410.0" progress="0.0" />
    </children>
 </AnchorPane>
