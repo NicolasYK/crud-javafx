@@ -2,7 +2,7 @@ package model.entities;
 
 public class Anime {
 	
-	private Integer Id;
+	private Integer AnimeId;
 	private String Title;
 	private String Genres;
 	private String Themes;
@@ -10,7 +10,7 @@ public class Anime {
 	private String Studio;
 	public Anime(Integer id, String title, String genres,String themes, 
 			String demographics, String studio) {
-		Id = id;
+		AnimeId = id;
 		Title = title;
 		Genres = genres;
 		Themes = themes;
@@ -18,43 +18,52 @@ public class Anime {
 		Studio = studio;
 	}
 	
-	public Integer getId() {
-		return Id;
+	public Integer getAnimeId() {
+		return AnimeId;
 	}
-	public void setId(Integer id) {
-		Id = id;
+	
+	public void setAnimeId(Integer id) {
+		AnimeId = id;
 	}
+	
 	public String getTitle() {
 		return Title;
 	}
+	
 	public void setTitle(String title) {
 		Title = title;
 	}
+	
 	public String getGenres() {
 		return Genres;
 	}
+	
 	public void setGenres(String genres) {
 		Genres = genres;
 	}
+	
 	public String getDemographics() {
 		return Demographics;
 	}
+	
 	public void setDemographics(String demographics) {
 		Demographics = demographics;
 	}
+	
 	public String getStudio() {
 		return Studio;
 	}
+	
 	public void setStudio(String studio) {
 		Studio = studio;
 	}
+	
 	public String getThemes() {
 		return Themes;
 	}
+	
 	public void setThemes(String themes) {
 		Themes = themes;
 	}
-	
-	
 
 }
