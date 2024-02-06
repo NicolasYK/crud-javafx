@@ -5,11 +5,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import db.DataBase;
 import db.DataBaseException;
+import gui.utils.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,12 +21,11 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.paint.Color;
+import model.dao.DAOFactory;
 import model.entities.Anime;
-import model.entities.Demographics;
-import model.entities.Genres;
-import model.entities.Studio;
-import model.entities.Themes;
 
 public class CrudController implements Initializable {
 
@@ -52,6 +52,8 @@ public class CrudController implements Initializable {
 	@FXML
 	private Button BtDelete;
 	@FXML
+	private Button BtClear;
+	@FXML
 	private TableView<Anime> TvAnime;
 	@FXML
 	private TableColumn<Anime, Integer> ColId;
@@ -68,6 +70,93 @@ public class CrudController implements Initializable {
 	@FXML
 	private ProgressBar PbSearch;
 
+	@FXML
+	private void onActionSearch() {
+		try {
+			String text_search = TfSearch.getText().toUpperCase();
+			ObservableList<Anime> listSearch = DAOFactory.createAnimeDao().findByName(text_search);
+			Anime title_search = listSearch.get(0);
+			TfID.setText(String.valueOf(title_search.getAnimeId()));
+			TfTitle.setText(String.valueOf(title_search.getTitle()));
+			CbGenres.setValue(String.valueOf(title_search.getGenres()));
+			CbThemes.setValue(String.valueOf(title_search.getThemes()));
+			CbDemographics.setValue(String.valueOf(title_search.getDemographics()));
+			CbStudio.setValue(String.valueOf(title_search.getStudio()));			
+		}
+		catch(NullPointerException e) {
+			Alerts.showAlert("Erro!", 
+					"Falha ao encontrar o valor especificado", 
+					"Por favor, verifique se preencheu os campos corretamente e tente novamente...", 
+					AlertType.WARNING);
+			PbSearch.setProgress(1.0);
+		}
+		finally {
+			PbSearch.setProgress(1.0);
+		}
+	}
+	
+	@FXML
+	private void onActionInsert() {
+	}
+
+	@FXML
+	private void onActionUpdate() {
+
+	}
+
+	@FXML
+	private void onActionDelete() {
+	}
+	
+	@FXML
+	private void onActionClear() {
+		TfID.setText("");
+		TfTitle.setText("");
+		TfSearch.setText("");
+		CbGenres.setValue("");
+		CbThemes.setValue("");
+		CbDemographics.setValue("");
+		CbStudio.setValue("");
+		PbSearch.setProgress(0);
+		showAnimeList(getAllAnimeList());
+	}
+
+	private static ObservableList<Anime> getAllAnimeList() {
+		ObservableList<Anime> animelist;
+		animelist = FXCollections.observableArrayList(DAOFactory.createAnimeDao().getListComplete());
+		return animelist;
+	}
+
+	private static ObservableList<String> getCollectionNames(List<String> list){
+		ObservableList<String> genericList;
+		genericList = FXCollections.observableArrayList(list);
+		return genericList;
+	}
+	
+	
+	public void showAnimeList(ObservableList<Anime> animeList) {
+		
+		ColId.setCellValueFactory(new PropertyValueFactory<Anime, Integer>("AnimeId"));
+		ColTitle.setCellValueFactory(new PropertyValueFactory<Anime, String>("Title"));
+		ColGenres.setCellValueFactory(new PropertyValueFactory<Anime, String>("Genres"));
+		ColThemes.setCellValueFactory(new PropertyValueFactory<Anime, String>("Themes"));
+		ColDemographics.setCellValueFactory(new PropertyValueFactory<Anime, String>("Demographics"));
+		ColStudio.setCellValueFactory(new PropertyValueFactory<Anime, String>("Studio"));
+		TvAnime.setItems(animeList);
+	}
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		TfID.setDisable(true);
+		CbGenres.setItems(getCollectionNames(DAOFactory.createGenresDao().getListName()));
+		CbThemes.setItems(getCollectionNames(DAOFactory.createThemesDao().getListName()));
+		CbDemographics.setItems(getCollectionNames(DAOFactory.createDemoDao().getListName()));
+		CbStudio.setItems(getCollectionNames(DAOFactory.createStudioDAO().getListName()));
+		showAnimeList(getAllAnimeList());
+	}
+}
+
+/*
 	@FXML
 	private void onActionSearch() {
 		String text_search = TfSearch.getText().toUpperCase();
@@ -114,82 +203,4 @@ public class CrudController implements Initializable {
 			throw new DataBaseException(e.getMessage());
 		}
 	}
-
-	@FXML
-	private void onActionInsert() {
-		
-	}
-
-	@FXML
-	private void onActionUpdate() {
-		
-	}
-
-	@FXML
-	private void onActionDelete() {
-
-	}
-
-	private static ObservableList<Anime> getAllAnimeList() {
-		ObservableList<Anime> animelist = FXCollections.observableArrayList();
-		Connection conn = DataBase.getConnection();
-		Anime animes;
-		try (Statement st = conn.createStatement()) {
-			ResultSet rs = st.executeQuery(
-					"select animes.anime_id as id ,animes.title, genres.genres, themes.themes, demographics.demographic, studio.studio_name as studio \r\n"
-							+ "from animes\r\n" + "join anime_genres on anime_genres.anime_id = animes.anime_id\r\n"
-							+ "join genres on anime_genres.genres_id = genres.genres_id\r\n"
-							+ "join anime_themes on anime_themes.anime_id = animes.anime_id\r\n"
-							+ "join themes on anime_themes.themes_id = themes.themes_id\r\n"
-							+ "join anime_demographics on anime_demographics.anime_id = animes.anime_id\r\n"
-							+ "join demographics on anime_demographics.demographics_id = demographics.demographics_id\r\n"
-							+ "join anime_studio on anime_studio.anime_id = animes.anime_id\r\n"
-							+ "join studio on anime_studio.studio_id = studio.studio_id\r\n"
-							+ "order by animes.anime_id;");
-			while (rs.next()) {
-				animes = new Anime(rs.getInt("id"), rs.getString("title"), rs.getString("genres"),
-						rs.getString("themes"), rs.getString("demographic"), rs.getString("studio"));
-				animelist.add(animes);
-			}
-			return animelist;
-		} catch (SQLException e) {
-			throw new DataBaseException(e.getMessage());
-		}
-	}
-
-	private static ObservableList<String> getAllGenericList(String query, String columName){
-		ObservableList<String> genericlist = FXCollections.observableArrayList();
-		Connection conn = DataBase.getConnection();
-		try(Statement st = conn.createStatement()){
-			
-			ResultSet rs = st.executeQuery(query);
-			while(rs.next()) {
-				genericlist.add(rs.getString(columName));
-			}
-			return genericlist;
-		}
-		catch(SQLException e) {
-			throw new DataBaseException(e.getMessage());
-		}
-	}
-
-	public void showAnimeList(ObservableList<Anime> animeList) {
-		
-		ColId.setCellValueFactory(new PropertyValueFactory<Anime, Integer>("AnimeId"));
-		ColTitle.setCellValueFactory(new PropertyValueFactory<Anime, String>("Title"));
-		ColGenres.setCellValueFactory(new PropertyValueFactory<Anime, String>("Genres"));
-		ColThemes.setCellValueFactory(new PropertyValueFactory<Anime, String>("Themes"));
-		ColDemographics.setCellValueFactory(new PropertyValueFactory<Anime, String>("Demographics"));
-		ColStudio.setCellValueFactory(new PropertyValueFactory<Anime, String>("Studio"));
-		TvAnime.setItems(animeList);
-	}
-
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		CbGenres.setItems(getAllGenericList("SELECT * FROM genres;", "genres"));
-		CbThemes.setItems(getAllGenericList("SELECT * FROM themes;", "themes"));
-		CbDemographics.setItems(getAllGenericList("SELECT * FROM demographics;", "demographic"));
-		CbStudio.setItems(getAllGenericList("SELECT * FROM studio;", "studio_name"));
-		showAnimeList(getAllAnimeList());
-	}
-}
+ */

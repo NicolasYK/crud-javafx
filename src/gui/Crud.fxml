@@ -13,7 +13,7 @@
 
 <AnchorPane prefHeight="500.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.CrudController">
    <children>
-      <VBox layoutX="21.0" layoutY="77.0" prefHeight="222.0" prefWidth="145.0" spacing="20.0">
+      <VBox layoutX="14.0" layoutY="77.0" prefHeight="262.0" prefWidth="145.0" spacing="20.0">
          <children>
             <Label alignment="CENTER" text="ID">
                <font>
@@ -47,7 +47,7 @@
             </Label>
          </children>
       </VBox>
-      <VBox layoutX="166.0" layoutY="77.0" prefHeight="222.0" prefWidth="200.0" spacing="22.0">
+      <VBox layoutX="165.0" layoutY="77.0" prefHeight="262.0" prefWidth="200.0" spacing="22.0">
          <children>
             <TextField fx:id="TfID" promptText="ID" />
             <TextField fx:id="TfTitle" promptText="Title" />
@@ -57,14 +57,14 @@
             <ChoiceBox fx:id="CbStudio" prefHeight="25.0" prefWidth="200.0" />
          </children>
       </VBox>
-      <Label layoutX="14.0" layoutY="35.0" text="Search:">
+      <Label layoutX="390.0" layoutY="32.0" text="Search:">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TextField fx:id="TfSearch" layoutX="85.0" layoutY="34.0" prefHeight="25.0" prefWidth="335.0" promptText="Title" />
-      <Button fx:id="BtSearch" layoutX="435.0" layoutY="34.0" mnemonicParsing="false" onAction="#onActionSearch" prefHeight="25.0" prefWidth="80.0" text="search" />
-      <TableView fx:id="TvAnime" layoutX="390.0" layoutY="77.0" prefHeight="400.0" prefWidth="550.0">
+      <TextField fx:id="TfSearch" layoutX="457.0" layoutY="34.0" prefHeight="25.0" prefWidth="380.0" promptText="Title" />
+      <Button fx:id="BtSearch" layoutX="856.0" layoutY="34.0" mnemonicParsing="false" onAction="#onActionSearch" prefHeight="25.0" prefWidth="80.0" text="search" />
+      <TableView fx:id="TvAnime" layoutX="390.0" layoutY="77.0" prefHeight="361.0" prefWidth="550.0">
         <columns>
           <TableColumn fx:id="ColId" editable="false" prefWidth="50.0" text="ID" />
           <TableColumn fx:id="ColTitle" editable="false" prefWidth="100.0" text="Title" />
@@ -74,9 +74,15 @@
             <TableColumn fx:id="ColStudio" editable="false" prefWidth="100.0" text="Studio" />
         </columns>
       </TableView>
-      <Button fx:id="BtInsert" layoutX="20.0" layoutY="377.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="INSERT" />
-      <Button fx:id="BtUpdate" layoutX="144.0" layoutY="377.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="UPDATE" />
-      <Button fx:id="BtDelete" layoutX="266.0" layoutY="377.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="DELETE" />
-      <ProgressBar fx:id="PbSearch" layoutX="530.0" layoutY="33.0" prefHeight="27.0" prefWidth="410.0" progress="0.0" />
+      <Button fx:id="BtInsert" layoutX="13.0" layoutY="366.0" mnemonicParsing="false" onAction="#onActionInsert" prefHeight="50.0" prefWidth="100.0" text="INSERT" />
+      <Button fx:id="BtUpdate" layoutX="139.0" layoutY="366.0" mnemonicParsing="false" onAction="#onActionUpdate" prefHeight="50.0" prefWidth="100.0" text="UPDATE" />
+      <Button fx:id="BtDelete" layoutX="265.0" layoutY="366.0" mnemonicParsing="false" onAction="#onActionDelete" prefHeight="50.0" prefWidth="100.0" text="DELETE" />
+      <ProgressBar fx:id="PbSearch" layoutX="390.0" layoutY="448.0" prefHeight="27.0" prefWidth="550.0" progress="0.0" />
+      <Button fx:id="BtClear" layoutX="13.0" layoutY="425.0" mnemonicParsing="false" onAction="#onActionClear" prefHeight="50.0" prefWidth="352.0" text="CLEAR FORM" />
+      <Label layoutX="14.0" layoutY="34.0" text="Form:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

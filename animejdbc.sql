@@ -74,68 +74,68 @@ FOREIGN KEY (themes_id) REFERENCES themes (themes_id)
 );
 
 -- Inserindo dados na tabela Gênero
-INSERT INTO genres (genres) VALUES ('Action');
-INSERT INTO genres (genres) VALUES ('Adventure');
-INSERT INTO genres (genres) VALUES ('Comedy');
-INSERT INTO genres (genres) VALUES ('Drama');
-INSERT INTO genres (genres) VALUES ('Fantasy');
-INSERT INTO genres (genres) VALUES ('Romance');
-INSERT INTO genres (genres) VALUES ('Mystery');
-INSERT INTO genres (genres) VALUES ('Supernatural');
-INSERT INTO genres (genres) VALUES ('Slice of Life');
-INSERT INTO genres (genres) VALUES ('Horror');
-INSERT INTO genres (genres) VALUES ('Ecchi');
+INSERT INTO genres (genres) VALUES ('ACTION');
+INSERT INTO genres (genres) VALUES ('ADVENTURE');
+INSERT INTO genres (genres) VALUES ('COMEDY');
+INSERT INTO genres (genres) VALUES ('DRAMA');
+INSERT INTO genres (genres) VALUES ('FANTASY');
+INSERT INTO genres (genres) VALUES ('ROMANCE');
+INSERT INTO genres (genres) VALUES ('MYSTERY');
+INSERT INTO genres (genres) VALUES ('SUPERNATURAL');
+INSERT INTO genres (genres) VALUES ('SLICE OF LIFE');
+INSERT INTO genres (genres) VALUES ('HORROR');
+INSERT INTO genres (genres) VALUES ('ECCHI');
 
 -- Inserindo dados na tabela Temas
-INSERT INTO themes (themes) VALUES ('Anthropomorphic');
-INSERT INTO themes (themes) VALUES ('Music');
-INSERT INTO themes (themes) VALUES ('Isekai');
-INSERT INTO themes (themes) VALUES ('Historical');
-INSERT INTO themes (themes) VALUES ('Educational');
-INSERT INTO themes (themes) VALUES ('Reincarnation');
-INSERT INTO themes (themes) VALUES ('Space');
-INSERT INTO themes (themes) VALUES ('Adult Cast');
-INSERT INTO themes (themes) VALUES ('Psychological');
-INSERT INTO themes (themes) VALUES ('Harem');
-INSERT INTO themes (themes) VALUES ('School');
-INSERT INTO themes (themes) VALUES ('Super Power');
-INSERT INTO themes (themes) VALUES ('Survival');
-INSERT INTO themes (themes) VALUES ('Otaku Culture');
+INSERT INTO themes (themes) VALUES ('ANTHROPOMORPHIC');
+INSERT INTO themes (themes) VALUES ('MUSIC');
+INSERT INTO themes (themes) VALUES ('ISEKAI');
+INSERT INTO themes (themes) VALUES ('HISTORICAL');
+INSERT INTO themes (themes) VALUES ('EDUCATIONAL');
+INSERT INTO themes (themes) VALUES ('REINCARNATION');
+INSERT INTO themes (themes) VALUES ('SPACE');
+INSERT INTO themes (themes) VALUES ('ADULT CAST');
+INSERT INTO themes (themes) VALUES ('PSYCHOLOGICAL');
+INSERT INTO themes (themes) VALUES ('HAREM');
+INSERT INTO themes (themes) VALUES ('SCHOOL');
+INSERT INTO themes (themes) VALUES ('SUPER POWER');
+INSERT INTO themes (themes) VALUES ('SURVIVAL');
+INSERT INTO themes (themes) VALUES ('OTAKU CULTURE');
 
 -- Inserindo dados na tabela Público-Alvo
-INSERT INTO demographics (demographic) VALUE ('Josei');
-INSERT INTO demographics (demographic) VALUE ('Kids');
-INSERT INTO demographics (demographic) VALUE ('Seinen');
-INSERT INTO demographics (demographic) VALUE ('Shoujo');
-INSERT INTO demographics (demographic) VALUE ('Shounen');
+INSERT INTO demographics (demographic) VALUE ('JOSEI');
+INSERT INTO demographics (demographic) VALUE ('KIDS');
+INSERT INTO demographics (demographic) VALUE ('SEINEN');
+INSERT INTO demographics (demographic) VALUE ('SHOUJO');
+INSERT INTO demographics (demographic) VALUE ('SHOUNEN');
 
 -- Inserindo dados na tabela Estudio
-INSERT INTO studio (studio_name) VALUE ('Pierrot');
-INSERT INTO studio (studio_name) VALUE ('Ufotable');
+INSERT INTO studio (studio_name) VALUE ('PIERROT');
+INSERT INTO studio (studio_name) VALUE ('UFOTABLE');
 INSERT INTO studio (studio_name) VALUE ('MAPPA');
-INSERT INTO studio (studio_name) VALUE ('Wit Studio');
-INSERT INTO studio (studio_name) VALUE ('Toei Animation');
-INSERT INTO studio (studio_name) VALUE ('A-1 Pictures');
-INSERT INTO studio (studio_name) VALUE ('TMS Entertainment');
-INSERT INTO studio (studio_name) VALUE ('Studio Deen');
-INSERT INTO studio (studio_name) VALUE ('Kyoto Animation');
-INSERT INTO studio (studio_name) VALUE ('Discotek Media');
-INSERT INTO studio (studio_name) VALUE ('MadHouse');
-INSERT INTO studio (studio_name) VALUE ('Bones');
-INSERT INTO studio (studio_name) VALUE ('White Fox');
-INSERT INTO studio (studio_name) VALUE ('CloverWorks');
+INSERT INTO studio (studio_name) VALUE ('WIT STUDIO');
+INSERT INTO studio (studio_name) VALUE ('TOEI ANIMATION');
+INSERT INTO studio (studio_name) VALUE ('A-1 PICTURES');
+INSERT INTO studio (studio_name) VALUE ('TMS ENTERTAINMENT');
+INSERT INTO studio (studio_name) VALUE ('STUDIO DEEN');
+INSERT INTO studio (studio_name) VALUE ('KYOTO ANIMATION');
+INSERT INTO studio (studio_name) VALUE ('DISCOTEK MEDIA');
+INSERT INTO studio (studio_name) VALUE ('MADHOUSE');
+INSERT INTO studio (studio_name) VALUE ('BONES');
+INSERT INTO studio (studio_name) VALUE ('WHITE FOX');
+INSERT INTO studio (studio_name) VALUE ('CLOVERWORKS');
 
 -- Inserindo dados na tabela Anime
-INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('One Punch Man',1,8,3,11);
-INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('Boku No Hero Academia',1,11,5,12);
-INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('Kimetsu No Yaiba',1,4,5,2);
-INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('Kono Subarashii Sekai ni Shukufuku wo!',2,3,3,8);
-INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('Dr Stone',2,13,5,7);
-INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('Overlord',2,3,3,11);
-INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('Steins Gate',4,9,3,13);
-INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('Violet Evergarden',4,4,3,9);
-INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('Horimiya',6,11,5,14);
-INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('Sono Bisque Doll wa Koi wo Suru',6,14,3,14);
+INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('ONE PUNCH MAN',1,8,3,11);
+INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('BOKU NO HERO ACADEMIA',1,11,5,12);
+INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('KIMETSU NO YAIBA',1,4,5,2);
+INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('KONO SUBARASHII SEKAI NI SHUKUFUKU WO!',2,3,3,8);
+INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('DR STONE',2,13,5,7);
+INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('OVERLORD',2,3,3,11);
+INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('STEINS GATE',4,9,3,13);
+INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('VIOLET EVERGARDEN',4,4,3,9);
+INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('HORIMIYA',6,11,5,14);
+INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('SONO BISQUE DOLL WA KOI WO SURU',6,14,3,14);
 
 -- Inserindo dados na tabela relacional anime e genero
 INSERT INTO anime_genres (anime_id, genres_id) 
