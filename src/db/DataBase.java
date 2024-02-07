@@ -38,21 +38,25 @@ public class DataBase {
 		}
 	}
 	
-	public static void closeStatement(Statement resultset) {
-		try {
-			resultset.close();
-		}
-		catch(SQLException e) {
-			e.printStackTrace();
+	public static void closeStatement(Statement statement) {
+		if(statement != null) {
+			try {
+				statement.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}			
 		}
 	}
 	
 	public static void closeResultSet(ResultSet resultset) {
-		try {
-			resultset.close();
-		}
-		catch(SQLException e) {
-			e.printStackTrace();
+		if(resultset != null) {
+			try {
+				resultset.close();
+			}
+			catch(SQLException e) {
+				e.printStackTrace();
+			}			
 		}
 	}
 

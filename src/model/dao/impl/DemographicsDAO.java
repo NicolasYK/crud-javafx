@@ -26,18 +26,20 @@ public class DemographicsDAO implements GenericDao<Demographics>{
 		// TODO Auto-generated method stub
 		
 	}
+	
 
 	@Override
-	public void update() {
+	public void update(Demographics demo) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void delete() {
+	public void delete(Demographics demo) {
 		// TODO Auto-generated method stub
 		
 	}
+	
 
 	@Override
 	public List<Demographics> getListComplete() {

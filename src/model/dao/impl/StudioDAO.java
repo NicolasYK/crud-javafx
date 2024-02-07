@@ -28,13 +28,13 @@ public class StudioDAO implements GenericDao<Studio>{
 	}
 
 	@Override
-	public void update() {
+	public void update(Studio studio) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void delete() {
+	public void delete(Studio studio) {
 		// TODO Auto-generated method stub
 		
 	}

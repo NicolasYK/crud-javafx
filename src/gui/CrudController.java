@@ -18,7 +18,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.dao.DAOFactory;
-import model.dao.impl.AnimeDAO;
 import model.entities.Anime;
 import model.entities.Demographics;
 import model.entities.Genres;
@@ -95,50 +94,134 @@ public class CrudController implements Initializable {
 	
 	@FXML
 	private void onActionInsert() {
-		int titleId = DAOFactory.createAnimeDao().isExists(TfTitle.getText().toUpperCase());
-		int genresId = DAOFactory.createGenresDao().isExists(CbGenres.getValue().toUpperCase());
-		int themeId = DAOFactory.createThemesDao().isExists(CbThemes.getValue().toUpperCase());
-		int demoId = DAOFactory.createDemoDao().isExists(CbDemographics.getValue().toUpperCase());
-		int studioId = DAOFactory.createStudioDAO().isExists(CbStudio.getValue().toUpperCase());
-		if(genresId > 0 && themeId > 0 && demoId > 0 && studioId > 0) {
-			if(titleId > 0) {
-				Alerts.showAlert(
-						"ATENÇÃO!",
-						"Este formulário foi cadastrado!",
-						null, AlertType.INFORMATION);
+		try {
+			int titleId = DAOFactory.createAnimeDao().isExists(TfTitle.getText().toUpperCase());
+			int genresId = DAOFactory.createGenresDao().isExists(CbGenres.getValue().toUpperCase());
+			int themeId = DAOFactory.createThemesDao().isExists(CbThemes.getValue().toUpperCase());
+			int demoId = DAOFactory.createDemoDao().isExists(CbDemographics.getValue().toUpperCase());
+			int studioId = DAOFactory.createStudioDAO().isExists(CbStudio.getValue().toUpperCase());
+			if(genresId > 0 && themeId > 0 && demoId > 0 && studioId > 0) {
+				if(titleId > 0) {
+					Alerts.showAlert(
+							"ATENÇÃO!",
+							"Este formulário foi cadastrado!",
+							null, AlertType.INFORMATION);
+				}
+				else {
+					Anime anime = new Anime();
+					anime.setTitle(TfTitle.getText().toUpperCase());
+					anime.setGenres(new Genres(genresId, CbGenres.getValue().toUpperCase()));
+					anime.setThemes(new Themes(themeId, CbThemes.getValue().toUpperCase()));
+					anime.setDemographics(new  Demographics(demoId, CbDemographics.getValue().toUpperCase()));
+					anime.setStudio(new Studio(studioId, CbStudio.getValue().toUpperCase()));
+					DAOFactory.createAnimeDao().insert(anime);
+					showAnimeList(getAllAnimeList());
+					TvAnime.refresh();
+					Alerts.showAlert("PARABÉNS", 
+							"O NOVO FORMULÁRIO FOI ADICIONADO!", 
+							"Será atualizado a tabela para checar o novo item...", 
+							AlertType.CONFIRMATION);
+				}
 			}
-			else {
-				Anime anime = new Anime();
-				anime.setTitle(TfTitle.getText().toUpperCase());
-				anime.setGenres(new Genres(genresId, CbGenres.getValue().toUpperCase()));
-				anime.setThemes(new Themes(themeId, CbThemes.getValue().toUpperCase()));
-				anime.setDemographics(new  Demographics(demoId, CbDemographics.getValue().toUpperCase()));
-				anime.setStudio(new Studio(studioId, CbStudio.getValue().toUpperCase()));
-				DAOFactory.createAnimeDao().insert(anime);
-				showAnimeList(getAllAnimeList());
-			}
+		}
+		catch(NullPointerException e) {
+			Alerts.showAlert("ATENÇÃO",
+					"Você esqueceu ou não completou todos os campos abaixo!",
+					"Por favor cheque e tente novamente.",
+					AlertType.WARNING);
 		}
 		
 	}
 
 	@FXML
 	private void onActionUpdate() {
-		
+		try {
+			int titleId = DAOFactory.createAnimeDao().isExists(TfTitle.getText().toUpperCase());
+			int genresId = DAOFactory.createGenresDao().isExists(CbGenres.getValue().toUpperCase());
+			int themeId = DAOFactory.createThemesDao().isExists(CbThemes.getValue().toUpperCase());
+			int demoId = DAOFactory.createDemoDao().isExists(CbDemographics.getValue().toUpperCase());
+			int studioId = DAOFactory.createStudioDAO().isExists(CbStudio.getValue().toUpperCase());
+			if(genresId > 0 && themeId > 0 && demoId > 0 && studioId > 0) {
+				if(titleId > 0) {
+					Anime anime = new Anime();
+					anime.setAnimeId(titleId);
+					anime.setTitle(TfTitle.getText().toUpperCase());
+					anime.setGenres(new Genres(genresId, CbGenres.getValue().toUpperCase()));
+					anime.setThemes(new Themes(themeId, CbThemes.getValue().toUpperCase()));
+					anime.setDemographics(new  Demographics(demoId, CbDemographics.getValue().toUpperCase()));
+					anime.setStudio(new Studio(studioId, CbStudio.getValue().toUpperCase()));
+					DAOFactory.createAnimeDao().update(anime);
+					showAnimeList(getAllAnimeList());
+					TvAnime.refresh();
+					Alerts.showAlert("PARABÉNS!",
+							"O FORMULARIO ATUAL FOI ATUALIZADO.",
+							"Será atualizado a tabela para checar a atualização do item...",
+							AlertType.CONFIRMATION);
+				}
+				else {
+					Alerts.showAlert(
+							"ATENÇÃO!",
+							"Este formulário não existe, por favor confirme se não há nenhum erro...",
+							null, AlertType.INFORMATION);
+				}
+			}
+		}
+		catch(NullPointerException e) {
+			Alerts.showAlert("ATENÇÃO!",
+					"Está faltando algum dado para completar esta ação!",
+					null, AlertType.WARNING);
+		}
 	}
 
 	@FXML
 	private void onActionDelete() {
+		try {
+			int titleId = DAOFactory.createAnimeDao().isExists(TfTitle.getText().toUpperCase());
+			int genresId = DAOFactory.createGenresDao().isExists(CbGenres.getValue().toUpperCase());
+			int themeId = DAOFactory.createThemesDao().isExists(CbThemes.getValue().toUpperCase());
+			int demoId = DAOFactory.createDemoDao().isExists(CbDemographics.getValue().toUpperCase());
+			int studioId = DAOFactory.createStudioDAO().isExists(CbStudio.getValue().toUpperCase());
+			if(genresId > 0 && themeId > 0 && demoId > 0 && studioId > 0) {
+				if(titleId > 0) {
+					Anime anime = new Anime();
+					anime.setAnimeId(titleId);
+					anime.setTitle(TfTitle.getText().toUpperCase());
+					anime.setGenres(new Genres(genresId, CbGenres.getValue().toUpperCase()));
+					anime.setThemes(new Themes(themeId, CbThemes.getValue().toUpperCase()));
+					anime.setDemographics(new  Demographics(demoId, CbDemographics.getValue().toUpperCase()));
+					anime.setStudio(new Studio(studioId, CbStudio.getValue().toUpperCase()));
+					DAOFactory.createAnimeDao().delete(anime);
+					showAnimeList(getAllAnimeList());
+					TvAnime.refresh();
+					Alerts.showAlert("PARABÉNS!",
+							"O FORMULARIO ATUAL FOI DELETADO.",
+							"Será atualizado a tabela para checar a atualização do item...",
+							AlertType.CONFIRMATION);
+				}
+				else {
+					Alerts.showAlert(
+							"ATENÇÃO!",
+							"Este formulário não existe, por favor confirme se não há nenhum erro...",
+							null, AlertType.INFORMATION);
+				}
+			}
+		}
+		catch(NullPointerException e) {
+			Alerts.showAlert("ATENÇÃO!",
+					"Está faltando algum dado para completar esta ação!",
+					null, AlertType.WARNING);
+		}
 	}
 	
 	@FXML
 	private void onActionClear() {
-		TfID.setText("");
-		TfTitle.setText("");
-		TfSearch.setText("");
-		CbGenres.setValue("");
-		CbThemes.setValue("");
-		CbDemographics.setValue("");
-		CbStudio.setValue("");
+		TfID.setText(null);
+		TfTitle.setText(null);
+		TfSearch.setText(null);
+		CbGenres.setValue(null);
+		CbThemes.setValue(null);
+		CbDemographics.setValue(null);
+		CbStudio.setValue(null);
 		PbSearch.setProgress(0);
 		showAnimeList(getAllAnimeList());
 	}

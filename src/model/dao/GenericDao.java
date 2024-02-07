@@ -7,8 +7,8 @@ import javafx.collections.ObservableList;
 public interface GenericDao<Type> {
 	
 	void insert(Type obj);
-	void update();
-	void delete();
+	void update(Type obj);
+	void delete(Type obj);
 	int isExists(String obj);
 	List<Type> getListComplete();
 	List<String> getListName();

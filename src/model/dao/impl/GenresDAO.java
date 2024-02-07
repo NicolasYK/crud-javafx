@@ -27,13 +27,13 @@ public class GenresDAO implements GenericDao<Genres>{
 	}
 
 	@Override
-	public void update() {
+	public void update(Genres genres) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void delete() {
+	public void delete(Genres genres) {
 		// TODO Auto-generated method stub
 		
 	}

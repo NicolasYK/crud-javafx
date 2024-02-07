@@ -28,13 +28,13 @@ public class ThemesDAO implements GenericDao<Themes>{
 	}
 
 	@Override
-	public void update() {
+	public void update(Themes themes) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void delete() {
+	public void delete(Themes themes) {
 		// TODO Auto-generated method stub
 		
 	}

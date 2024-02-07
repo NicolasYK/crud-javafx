@@ -2,17 +2,6 @@ DROP DATABASE IF EXISTS animejdbc;
 CREATE DATABASE IF NOT EXISTS animejdbc;
 USE animejdbc;
 
--- Criando a tabela de animes;
-CREATE TABLE IF NOT EXISTS animes (
-anime_id INT AUTO_INCREMENT NOT NULL,
-title VARCHAR(255) NOT NULL,
-genres_id INT NOT NULL,
-themes_id INT NOT NULL,
-demographics_id INT NOT NULL,
-studio_id INT NOT NULL,
-PRIMARY KEY (anime_id)
-); 
-
 -- Criando a tabela de generos;
 CREATE TABLE IF NOT EXISTS genres(
 genres_id INT AUTO_INCREMENT NOT NULL,
@@ -41,37 +30,20 @@ studio_name VARCHAR(60) NOT NULL,
 PRIMARY KEY (studio_id)
 );
 
--- Relacionamento entre anime e gênero
-CREATE TABLE IF NOT EXISTS anime_genres(
-anime_id INT,
-genres_id INT,
-FOREIGN KEY (anime_id) REFERENCES animes (anime_id),
-FOREIGN KEY (genres_id) REFERENCES genres (genres_id)
-);
-
--- Relacionamento entre anime e público-alvo
-CREATE TABLE IF NOT EXISTS anime_demographics(
-anime_id INT,
-demographics_id INT,
-FOREIGN KEY (anime_id) REFERENCES animes (anime_id),
-FOREIGN KEY (demographics_id) REFERENCES demographics (demographics_id)
-);
-
--- Relacionamento entre anime e studio
-CREATE TABLE IF NOT EXISTS anime_studio(
-anime_id INT,
-studio_id INT,
-FOREIGN KEY (anime_id) REFERENCES animes (anime_id),
+-- Criando a tabela de animes;
+CREATE TABLE IF NOT EXISTS animes (
+anime_id INT AUTO_INCREMENT NOT NULL,
+title VARCHAR(255) NOT NULL,
+genres_id INT NOT NULL,
+themes_id INT NOT NULL,
+demographics_id INT NOT NULL,
+studio_id INT NOT NULL,
+PRIMARY KEY (anime_id),
+FOREIGN KEY (genres_id) REFERENCES genres (genres_id),
+FOREIGN KEY (themes_id) REFERENCES themes (themes_id),
+FOREIGN KEY (demographics_id) REFERENCES demographics (demographics_id),
 FOREIGN KEY (studio_id) REFERENCES studio (studio_id)
-);
-
--- Relacionamento entre anime e temas
-CREATE TABLE IF NOT EXISTS anime_themes(
-anime_id INT,
-themes_id INT,
-FOREIGN KEY (anime_id) REFERENCES animes (anime_id),
-FOREIGN KEY (themes_id) REFERENCES themes (themes_id)
-);
+); 
 
 -- Inserindo dados na tabela Gênero
 INSERT INTO genres (genres) VALUES ('ACTION');
@@ -136,20 +108,3 @@ INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VAL
 INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('VIOLET EVERGARDEN',4,4,3,9);
 INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('HORIMIYA',6,11,5,14);
 INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) VALUE ('SONO BISQUE DOLL WA KOI WO SURU',6,14,3,14);
-
--- Inserindo dados na tabela relacional anime e genero
-INSERT INTO anime_genres (anime_id, genres_id) 
-VALUE (1,1), (2,1), (3,1), (4,2), (5,2), (6,2), (7,4), (8,4), (9,6), (10,6);
-
--- Inserindo dados na tabela relacional anime e público-alvo
-INSERT INTO anime_demographics (anime_id, demographics_id) 
-VALUE (1,3), (2,5), (3,5), (4,3), (5,5), (6,3), (7,3), (8,3), (9,5), (10,3);
-
--- Inserindo dados na tabela relacional anime e studio
-INSERT INTO anime_studio (anime_id, studio_id) 
-VALUE (1,11), (2,12), (3,2), (4,8), (5,7), (6,11), (7,13), (8,9), (9,14), (10,14);
-
--- Inserindo dados na tabela relacional anime e temas
-INSERT INTO anime_themes (anime_id, themes_id) 
-VALUE (1,8), (2,11), (3,4), (4,3), (5,13), (6,3), (7,9), (8,4), (9,11), (10,14);
-

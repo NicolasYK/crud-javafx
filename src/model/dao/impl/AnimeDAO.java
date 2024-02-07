@@ -35,117 +35,98 @@ public class AnimeDAO implements GenericDao<Anime> {
 	public void insert(Anime anime) {
 		PreparedStatement st = null;
 		try {
-		    int verifyInsert = isExists(anime.getTitle());
-		    if (verifyInsert > 0) {
-		        Alerts.showAlert("ATENÇÃO!",
-		                "Este formulário foi cadastrado!",
-		                null, AlertType.INFORMATION);
-		    } else {
-		        conn.setAutoCommit(false); // Inicia uma transação
+			st = conn.prepareStatement(
+					"INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) "
+					+ "VALUE (?, ?, ?, ?, ?);",
+					Statement.RETURN_GENERATED_KEYS
+					);
+			st.setString(1, anime.getTitle());
+			st.setInt(2, anime.getGenres().getGenresId());
+			st.setInt(3, anime.getThemes().getThemesId());
+			st.setInt(4, anime.getDemographics().getDemographicId());
+			st.setInt(5, anime.getStudio().getStudioId());
+			
+			int rowsAffected = st.executeUpdate();
+			if(rowsAffected > 0) {
+				ResultSet rs = st.getGeneratedKeys();
+				if(rs.next()) {
+					int id = rs.getInt(1);
+					anime.setAnimeId(id);
+				}
+				DataBase.closeResultSet(rs);
+			}
+			else {
+				throw new SQLException();
+			}
+		}
+		catch(SQLException e){
+			throw new DataBaseException(e.getMessage());
+		}
+		finally {
+			DataBase.closeStatement(st);
+		}
+	}
 
-		        // Insere na tabela animes
-		        st = conn.prepareStatement(
-		                "INSERT INTO animes (title, genres_id, themes_id, demographics_id, studio_id) "
-		                        + "VALUES (?, ?, ?, ?, ?);",
-		                Statement.RETURN_GENERATED_KEYS
-		        );
-		        st.setString(1, anime.getTitle());
-		        st.setInt(2, anime.getGenres().getGenresId());
-		        st.setInt(3, anime.getThemes().getThemesId());
-		        st.setInt(4, anime.getDemographics().getDemographicId());
-		        st.setInt(5, anime.getStudio().getStudioId());
+	@Override
+	public void update(Anime anime) {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"UPDATE animes SET title = ?, genres_id = ?, themes_id = ?, "
+					+ "demographics_id = ?, studio_id = ? "
+					+ "WHERE anime_id = ?"
+					);
+			st.setString(1, anime.getTitle().toUpperCase());
+			st.setInt(2, anime.getGenres().getGenresId());
+			st.setInt(3, anime.getThemes().getThemesId());
+			st.setInt(4, anime.getDemographics().getDemographicId());
+			st.setInt(5, anime.getStudio().getStudioId());
+			st.setInt(6, anime.getAnimeId());
+			
+			st.executeUpdate();
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage());
+		}
+		finally {
+			DataBase.closeStatement(st);
+		}
+	}
 
-		        int rowsAffected = st.executeUpdate();
-		        if (rowsAffected > 0) {
-		            ResultSet rs = st.getGeneratedKeys();
-		            int animeId;
-		            if (rs.next()) {
-		                animeId = rs.getInt(1);
-
-		                PreparedStatement stGenres = conn.prepareStatement(
-		                        "INSERT INTO anime_genres (anime_id, genres_id) VALUES (?, ?);"
-		                );
-		                stGenres.setInt(1, animeId);
-		                stGenres.setInt(2, anime.getGenres().getGenresId());
-		                stGenres.executeUpdate();
-
-		                PreparedStatement stThemes = conn.prepareStatement(
-		                        "INSERT INTO anime_themes (anime_id, themes_id) VALUES (?, ?);"
-		                );
-		                stThemes.setInt(1, animeId);
-		                stThemes.setInt(2, anime.getThemes().getThemesId());
-		                stThemes.executeUpdate();
-
-		                PreparedStatement stDemographics = conn.prepareStatement(
-		                        "INSERT INTO anime_demographics (anime_id, demographics_id) VALUES (?, ?);"
-		                );
-		                stDemographics.setInt(1, animeId);
-		                stDemographics.setInt(2, anime.getDemographics().getDemographicId());
-		                stDemographics.executeUpdate();
-
-
-		                PreparedStatement stStudio = conn.prepareStatement(
-		                        "INSERT INTO anime_studio (anime_id, studio_id) VALUES (?, ?);"
-		                );
-		                stStudio.setInt(1, animeId);
-		                stStudio.setInt(2, anime.getStudio().getStudioId());
-		                stStudio.executeUpdate();
-
-		                conn.commit();
-		                Alerts.showAlert("CONCLUIDO!",
-		                        "O BANCO FOI ATUALIZADO!",
-		                        "UM NOVO FORMULÁRIO FOI INCLUIDO, ATUALIZE O BANCO PARA VER AS MODIFICAÇÕES...",
-		                        AlertType.CONFIRMATION);
-		            }
-		            DataBase.closeResultSet(rs);
-		        } else {
-		            throw new DataBaseException("Unexpected error! No rows affected!");
-		        }
-		    }
-		} catch (SQLException e) {
-		    try {
-		        conn.rollback();
-		    } catch (SQLException rollbackException) {
-		        rollbackException.printStackTrace();
-		    }
-		    throw new DataBaseException(e.getMessage());
-		} finally {
-		    DataBase.closeStatement(st);
-		    try {
-		        conn.setAutoCommit(true);
-		    } catch (SQLException e) {
-		        e.printStackTrace();
-		    }
+	@Override
+	public void delete(Anime animes) {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"DELETE FROM animes WHERE anime_id = ?"
+					);
+			st.setInt(1, animes.getAnimeId());
+			
+			int rowsAffected = st.executeUpdate();
+			
+			if(rowsAffected == 0) {
+				throw new DataBaseException("Anime Id not found!.");
+			}
+			
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage());
 		}
 
 	}
 
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete() {
-		// TODO Auto-generated method stub
-
-	}
-	
 	@Override
 	public int isExists(String obj) {
 		String title_exists = obj.toUpperCase();
 		try {
-			PreparedStatement st = conn.prepareStatement(
-					"SELECT anime_id FROM animes WHERE title = '"+title_exists+"';"
-					);
+			PreparedStatement st = conn
+					.prepareStatement("SELECT anime_id FROM animes WHERE title = '" + title_exists + "';");
 			ResultSet rs = st.executeQuery();
-			if(rs.next()) {
+			if (rs.next()) {
 				return rs.getInt("anime_id");
 			}
 			return -1;
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DataBaseException(e.getMessage());
 		}
 	}
@@ -161,8 +142,7 @@ public class AnimeDAO implements GenericDao<Anime> {
 	}
 
 	private Demographics instanceDemo(ResultSet rs) throws SQLException {
-		Demographics demo = new Demographics(rs.getInt("demographics_id"),
-				rs.getString("demographic"));
+		Demographics demo = new Demographics(rs.getInt("demographics_id"), rs.getString("demographic"));
 		return demo;
 	}
 
@@ -182,23 +162,20 @@ public class AnimeDAO implements GenericDao<Anime> {
 		anime.setStudio(studio);
 		return anime;
 	}
-	
+
 	@Override
 	public List<Anime> getListComplete() {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT animes.anime_id, animes.title, genres.genres_id, genres.genres, themes.themes_id, themes.themes, demographics.demographics_id, demographics.demographic, studio.studio_id, studio.studio_name\r\n"
-							+ "FROM animes\r\n" + "JOIN anime_genres ON animes.anime_id = anime_genres.anime_id\r\n"
-							+ "JOIN genres ON anime_genres.genres_id = genres.genres_id\r\n"
-							+ "JOIN anime_themes ON animes.anime_id = anime_themes.anime_id\r\n"
-							+ "JOIN themes ON anime_themes.themes_id = themes.themes_id\r\n"
-							+ "JOIN anime_demographics ON animes.anime_id = anime_demographics.anime_id\r\n"
-							+ "JOIN demographics ON anime_demographics.demographics_id = demographics.demographics_id\r\n"
-							+ "JOIN anime_studio ON animes.anime_id = anime_studio.anime_id\r\n"
-							+ "JOIN studio ON anime_studio.studio_id = studio.studio_id;"
-					);
+					"SELECT a.anime_id, a.title, g.genres_id, g.genres, t.themes_id, t.themes, d.demographics_id, d.demographic, s.studio_id, s.studio_name\r\n"
+					+ "FROM animes a \r\n"
+					+ "JOIN genres g ON a.genres_id = g.genres_id \r\n"
+					+ "JOIN themes t ON a.themes_id = t.themes_id\r\n"
+					+ "JOIN demographics d ON a.demographics_id = d.demographics_id\r\n"
+					+ "JOIN studio s ON a.studio_id = s.studio_id\r\n"
+					+ "ORDER BY a.anime_id;");
 			rs = st.executeQuery();
 			List<Anime> list = new ArrayList<>();
 			Map<Integer, Genres> map_genres = new HashMap<>();
@@ -233,8 +210,7 @@ public class AnimeDAO implements GenericDao<Anime> {
 			return list;
 		} catch (SQLException e) {
 			throw new DataBaseException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DataBase.closeStatement(st);
 			DataBase.closeResultSet(rs);
 		}
@@ -243,6 +219,21 @@ public class AnimeDAO implements GenericDao<Anime> {
 	@Override
 	public List<String> getListName() {
 		return null;
+	}
+
+	public int getId(String title) {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("SELECT animes.anime_id FROM animes WHERE title = ?;");
+			st.setString(1, title);
+			ResultSet rs = st.executeQuery();
+			if (rs.next()) {
+				return rs.getInt("anime_id");
+			}
+		} catch (SQLException e) {
+			throw new DataBaseException(e.getMessage());
+		}
+		return -1;
 	}
 
 	@Override
@@ -257,22 +248,16 @@ public class AnimeDAO implements GenericDao<Anime> {
 		ResultSet rs = null;
 		try {
 			st = conn.prepareStatement(
-					"SELECT animes.anime_id, animes.title, genres.genres_id, genres.genres, "
-					+ "themes.themes_id, themes.themes, demographics.demographics_id, "
-					+ "demographics.demographic, studio.studio_id, studio.studio_name\r\n"
-					+ "FROM animes\r\n"
-					+ "JOIN anime_genres ON animes.anime_id = anime_genres.anime_id\r\n"
-					+ "JOIN genres ON anime_genres.genres_id = genres.genres_id\r\n"
-					+ "JOIN anime_themes ON animes.anime_id = anime_themes.anime_id\r\n"
-					+ "JOIN themes ON anime_themes.themes_id = themes.themes_id\r\n"
-					+ "JOIN anime_demographics ON animes.anime_id = anime_demographics.anime_id\r\n"
-					+ "JOIN demographics ON anime_demographics.demographics_id = demographics.demographics_id\r\n"
-					+ "JOIN anime_studio ON animes.anime_id = anime_studio.anime_id\r\n"
-					+ "JOIN studio ON anime_studio.studio_id = studio.studio_id\r\n"
-					+ "WHERE animes.title = UPPER('"+name+"');\r\n"
+					"SELECT a.anime_id, a.title, g.genres_id, g.genres, t.themes_id, t.themes, d.demographics_id, d.demographic, s.studio_id, s.studio_name\r\n"
+					+ "FROM animes a \r\n"
+					+ "JOIN genres g ON a.genres_id = g.genres_id \r\n"
+					+ "JOIN themes t ON a.themes_id = t.themes_id\r\n"
+					+ "JOIN demographics d ON a.demographics_id = d.demographics_id\r\n"
+					+ "JOIN studio s ON a.studio_id = s.studio_id\r\n"
+					+ "WHERE a.title = '"+name+"';"
 					);
 			rs = st.executeQuery();
-			while(rs.next()) {
+			while (rs.next()) {
 				Genres genres = (Genres) map.get(rs.getInt("genres_id"));
 				if (genres == null) {
 					genres = instanceGenres(rs);
@@ -297,16 +282,13 @@ public class AnimeDAO implements GenericDao<Anime> {
 				list.add(anime);
 				return list;
 			}
-		}
-		catch(SQLException e) {
+		} catch (SQLException e) {
 			throw new DataBaseException(e.getMessage());
-		}
-		finally {
+		} finally {
 			DataBase.closeStatement(st);
 			DataBase.closeResultSet(rs);
 		}
 		return null;
 	}
-	
-	
+
 }
