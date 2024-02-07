@@ -22,7 +22,7 @@ public class StudioDAO implements GenericDao<Studio>{
 	}
 
 	@Override
-	public void insert() {
+	public void insert(Studio studio) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -67,6 +67,24 @@ public class StudioDAO implements GenericDao<Studio>{
 	public ObservableList<Studio> findByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int isExists(String obj) {
+		String studio_exists = obj.toUpperCase();
+		try {
+			PreparedStatement st = conn.prepareStatement(
+					"SELECT studio_id FROM studio WHERE studio_name = '"+studio_exists+"';"
+					);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				return rs.getInt("studio_id");
+			}
+			return -1;
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage());
+		}
 	}
 
 }

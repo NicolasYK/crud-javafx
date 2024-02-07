@@ -1,5 +1,7 @@
 package model.entities;
 
+import java.util.Objects;
+
 public class Themes {
 	
 	private Integer ThemesId;
@@ -24,6 +26,28 @@ public class Themes {
 
 	public void setThemes(String themes) {
 		Themes = themes;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(ThemesId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Themes other = (Themes) obj;
+		return Objects.equals(ThemesId, other.ThemesId);
+	}
+
+	@Override
+	public String toString() {
+		return getThemes();
 	}
 	
 	

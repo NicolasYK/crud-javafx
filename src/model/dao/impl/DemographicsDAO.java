@@ -22,7 +22,7 @@ public class DemographicsDAO implements GenericDao<Demographics>{
 	}
 
 	@Override
-	public void insert() {
+	public void insert(Demographics demo) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -67,6 +67,24 @@ public class DemographicsDAO implements GenericDao<Demographics>{
 	public ObservableList<Demographics> findByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int isExists(String obj) {
+		String demo_exists = obj.toUpperCase();
+		try {
+			PreparedStatement st = conn.prepareStatement(
+					"SELECT demographics_id FROM demographics WHERE demographic = '"+demo_exists+"';"
+					);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				return rs.getInt("demographics_id");
+			}
+			return -1;
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage());
+		}
 	}
 
 }

@@ -1,31 +1,29 @@
 package gui;
 
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import db.DataBase;
-import db.DataBaseException;
 import gui.utils.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.paint.Color;
 import model.dao.DAOFactory;
+import model.dao.impl.AnimeDAO;
 import model.entities.Anime;
+import model.entities.Demographics;
+import model.entities.Genres;
+import model.entities.Studio;
+import model.entities.Themes;
 
 public class CrudController implements Initializable {
 
@@ -75,13 +73,13 @@ public class CrudController implements Initializable {
 		try {
 			String text_search = TfSearch.getText().toUpperCase();
 			ObservableList<Anime> listSearch = DAOFactory.createAnimeDao().findByName(text_search);
-			Anime title_search = listSearch.get(0);
-			TfID.setText(String.valueOf(title_search.getAnimeId()));
-			TfTitle.setText(String.valueOf(title_search.getTitle()));
-			CbGenres.setValue(String.valueOf(title_search.getGenres()));
-			CbThemes.setValue(String.valueOf(title_search.getThemes()));
-			CbDemographics.setValue(String.valueOf(title_search.getDemographics()));
-			CbStudio.setValue(String.valueOf(title_search.getStudio()));			
+			Anime firstAnime = listSearch.get(0);
+			TfID.setText(String.valueOf(firstAnime.getAnimeId()));
+			TfTitle.setText(firstAnime.getTitle());
+			CbGenres.setValue(firstAnime.getGenres().getGenres());
+			CbThemes.setValue(firstAnime.getThemes().getThemes());
+			CbDemographics.setValue(firstAnime.getDemographics().getDemographic());
+			CbStudio.setValue(firstAnime.getStudio().getStudio());			
 		}
 		catch(NullPointerException e) {
 			Alerts.showAlert("Erro!", 
@@ -97,11 +95,35 @@ public class CrudController implements Initializable {
 	
 	@FXML
 	private void onActionInsert() {
+		int titleId = DAOFactory.createAnimeDao().isExists(TfTitle.getText().toUpperCase());
+		int genresId = DAOFactory.createGenresDao().isExists(CbGenres.getValue().toUpperCase());
+		int themeId = DAOFactory.createThemesDao().isExists(CbThemes.getValue().toUpperCase());
+		int demoId = DAOFactory.createDemoDao().isExists(CbDemographics.getValue().toUpperCase());
+		int studioId = DAOFactory.createStudioDAO().isExists(CbStudio.getValue().toUpperCase());
+		if(genresId > 0 && themeId > 0 && demoId > 0 && studioId > 0) {
+			if(titleId > 0) {
+				Alerts.showAlert(
+						"ATENÇÃO!",
+						"Este formulário foi cadastrado!",
+						null, AlertType.INFORMATION);
+			}
+			else {
+				Anime anime = new Anime();
+				anime.setTitle(TfTitle.getText().toUpperCase());
+				anime.setGenres(new Genres(genresId, CbGenres.getValue().toUpperCase()));
+				anime.setThemes(new Themes(themeId, CbThemes.getValue().toUpperCase()));
+				anime.setDemographics(new  Demographics(demoId, CbDemographics.getValue().toUpperCase()));
+				anime.setStudio(new Studio(studioId, CbStudio.getValue().toUpperCase()));
+				DAOFactory.createAnimeDao().insert(anime);
+				showAnimeList(getAllAnimeList());
+			}
+		}
+		
 	}
 
 	@FXML
 	private void onActionUpdate() {
-
+		
 	}
 
 	@FXML
@@ -135,7 +157,7 @@ public class CrudController implements Initializable {
 	
 	
 	public void showAnimeList(ObservableList<Anime> animeList) {
-		
+
 		ColId.setCellValueFactory(new PropertyValueFactory<Anime, Integer>("AnimeId"));
 		ColTitle.setCellValueFactory(new PropertyValueFactory<Anime, String>("Title"));
 		ColGenres.setCellValueFactory(new PropertyValueFactory<Anime, String>("Genres"));
@@ -155,52 +177,3 @@ public class CrudController implements Initializable {
 		showAnimeList(getAllAnimeList());
 	}
 }
-
-/*
-	@FXML
-	private void onActionSearch() {
-		String text_search = TfSearch.getText().toUpperCase();
-		Connection conn = DataBase.getConnection();
-		ObservableList<Anime> list = getAllAnimeList();
-		Double point_pbSearch = 0.0;
-		try {
-			PreparedStatement st = conn.prepareStatement(
-					"select animes.anime_id as id ,animes.title, genres.genres, themes.themes, demographics.demographic, studio.studio_name as studio \r\n"
-							+ "from animes\r\n" + "join anime_genres on anime_genres.anime_id = animes.anime_id\r\n"
-							+ "join genres on anime_genres.genres_id = genres.genres_id\r\n"
-							+ "join anime_themes on anime_themes.anime_id = animes.anime_id\r\n"
-							+ "join themes on anime_themes.themes_id = themes.themes_id\r\n"
-							+ "join anime_demographics on anime_demographics.anime_id = animes.anime_id\r\n"
-							+ "join demographics on anime_demographics.demographics_id = demographics.demographics_id\r\n"
-							+ "join anime_studio on anime_studio.anime_id = animes.anime_id\r\n"
-							+ "join studio on anime_studio.studio_id = studio.studio_id\r\n"
-							+ "where UPPER(animes.title) = '"+text_search+"';"
-					);
-			ResultSet rs = st.executeQuery();
-			while(rs.next()) {
-				point_pbSearch = point_pbSearch + 0.1;
-				PbSearch.setProgress(point_pbSearch);
-				list.removeAll(list);
-				list.add(new Anime(rs.getInt("id"), rs.getString("title"), rs.getString("genres"),
-						rs.getString("themes"), rs.getString("demographic"), rs.getString("studio")));
-				
-				TfID.setText(String.valueOf(rs.getInt("id")));
-				TfTitle.setText(String.valueOf(rs.getString("title")));
-				CbGenres.setValue(String.valueOf(rs.getString("genres")));
-				CbThemes.setValue(String.valueOf(rs.getString("themes")));
-				CbDemographics.setValue(String.valueOf(rs.getString("demographic")));
-				CbStudio.setValue(String.valueOf(rs.getString("studio")));
-				
-				
-				if(rs.next() == false) {
-					point_pbSearch = 1.0;
-					PbSearch.setProgress(point_pbSearch);
-				}
-			}
-			showAnimeList(list);
-
-		} catch (SQLException e) {
-			throw new DataBaseException(e.getMessage());
-		}
-	}
- */

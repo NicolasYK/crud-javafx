@@ -21,7 +21,7 @@ public class GenresDAO implements GenericDao<Genres>{
 	}
 
 	@Override
-	public void insert() {
+	public void insert(Genres genres) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -81,6 +81,24 @@ public class GenresDAO implements GenericDao<Genres>{
 	public ObservableList<Genres> findByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int isExists(String obj) {
+		String genres_exists = obj.toUpperCase();
+		try {
+			PreparedStatement st = conn.prepareStatement(
+					"SELECT genres_id FROM genres WHERE genres = '"+genres_exists+"';"
+					);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				return rs.getInt("genres_id");
+			}
+			return -1;
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage());
+		}
 	}
 
 }

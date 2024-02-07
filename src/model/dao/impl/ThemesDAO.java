@@ -22,7 +22,7 @@ public class ThemesDAO implements GenericDao<Themes>{
 	}
 
 	@Override
-	public void insert() {
+	public void insert(Themes themes) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -67,6 +67,24 @@ public class ThemesDAO implements GenericDao<Themes>{
 	public ObservableList<Themes> findByName(String name) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int isExists(String obj) {
+		String title_exists = obj.toUpperCase();
+		try {
+			PreparedStatement st = conn.prepareStatement(
+					"SELECT themes_id FROM themes WHERE themes = '"+title_exists+"';"
+					);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				return rs.getInt("themes_id");
+			}
+			return -1;
+		}
+		catch(SQLException e) {
+			throw new DataBaseException(e.getMessage());
+		}
 	}
 
 }

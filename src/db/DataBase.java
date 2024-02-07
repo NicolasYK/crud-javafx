@@ -4,7 +4,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 public class DataBase {
@@ -33,6 +35,24 @@ public class DataBase {
 			catch(SQLException e) {
 				throw new DataBaseException(e.getMessage());
 			}
+		}
+	}
+	
+	public static void closeStatement(Statement resultset) {
+		try {
+			resultset.close();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void closeResultSet(ResultSet resultset) {
+		try {
+			resultset.close();
+		}
+		catch(SQLException e) {
+			e.printStackTrace();
 		}
 	}
 

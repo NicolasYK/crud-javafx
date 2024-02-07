@@ -1,5 +1,7 @@
 package model.entities;
 
+import java.util.Objects;
+
 public class Demographics {
 	
 	private Integer DemographicId;
@@ -25,5 +27,29 @@ public class Demographics {
 	public void setDemographic(String demographic) {
 		Demographic = demographic;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(DemographicId);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Demographics other = (Demographics) obj;
+		return Objects.equals(DemographicId, other.DemographicId);
+	}
+
+	@Override
+	public String toString() {
+		return getDemographic();
+	}
+
+	
 	
 }
