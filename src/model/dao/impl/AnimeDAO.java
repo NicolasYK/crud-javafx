@@ -12,10 +12,8 @@ import java.util.Map;
 
 import db.DataBase;
 import db.DataBaseException;
-import gui.utils.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert.AlertType;
 import model.dao.GenericDao;
 import model.entities.Anime;
 import model.entities.Demographics;

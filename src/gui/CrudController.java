@@ -78,7 +78,9 @@ public class CrudController implements Initializable {
 			CbGenres.setValue(firstAnime.getGenres().getGenres());
 			CbThemes.setValue(firstAnime.getThemes().getThemes());
 			CbDemographics.setValue(firstAnime.getDemographics().getDemographic());
-			CbStudio.setValue(firstAnime.getStudio().getStudio());			
+			CbStudio.setValue(firstAnime.getStudio().getStudio());	
+			showAnimeList(listSearch);
+			TvAnime.refresh();
 		}
 		catch(NullPointerException e) {
 			Alerts.showAlert("Erro!", 
